@@ -2,63 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Fresh Market Hub Design System - Fresh, organic, modern colors and tokens */
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
 
 @layer base {
   :root {
-    /* Fresh Market Background & Base */
-    --background: 120 40% 98%;
-    --foreground: 120 30% 8%;
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
 
-    /* Card & Surface Colors */
     --card: 0 0% 100%;
-    --card-foreground: 120 25% 15%;
+    --card-foreground: 222.2 84% 4.9%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 120 25% 15%;
+    --popover-foreground: 222.2 84% 4.9%;
 
-    /* Fresh Green Primary Colors */
-    --primary: 130 60% 45%;
-    --primary-foreground: 0 0% 98%;
-    --primary-hover: 130 65% 40%;
-    --primary-glow: 130 50% 65%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
 
-    /* Natural Secondary Colors */
-    --secondary: 120 20% 92%;
-    --secondary-foreground: 120 30% 25%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
 
-    /* Muted Earth Tones */
-    --muted: 120 15% 94%;
-    --muted-foreground: 120 20% 45%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
 
-    /* Fresh Accent Colors */
-    --accent: 140 45% 88%;
-    --accent-foreground: 130 40% 20%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
 
-    /* Warm Alert Colors */
-    --destructive: 10 75% 55%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
 
-    /* Borders & Inputs */
-    --border: 120 25% 88%;
-    --input: 120 25% 90%;
-    --ring: 130 60% 45%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
 
-    --radius: 0.75rem;
-
-    /* Fresh Market Gradients */
-    --gradient-hero: linear-gradient(135deg, 120 40% 98%, 130 30% 95%);
-    --gradient-fresh: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-    --gradient-accent: linear-gradient(180deg, hsl(var(--accent)), hsl(var(--secondary)));
-
-    /* Market Shadows */
-    --shadow-soft: 0 4px 20px -4px hsl(var(--primary) / 0.1);
-    --shadow-card: 0 8px 30px -8px hsl(var(--primary) / 0.15);
-    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.3);
-
-    /* Smooth Transitions */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
 
