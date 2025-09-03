@@ -1,16 +1,22 @@
 import { ProductCard } from "@/components/ProductCard";
+import { useAllProducts } from "@/hooks/useProducts";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useCategories } from "@/hooks/useProducts";
 
 const Products = () => {
-  const products = [
-    { id: 1, image: "/api/placeholder/300/300", name: "Fresh Apple Basket", price: "$12.99" },
-    { id: 2, image: "/api/placeholder/300/300", name: "Organic Vegetables Bundle", price: "$18.99" },
-    { id: 3, image: "/api/placeholder/300/300", name: "Mixed Berry Selection", price: "$8.99" },
-    { id: 4, image: "/api/placeholder/300/300", name: "Citrus Fruit Pack", price: "$15.99" },
-    { id: 5, image: "/api/placeholder/300/300", name: "Leafy Greens Variety", price: "$10.99" },
-    { id: 6, image: "/api/placeholder/300/300", name: "Premium Banana Bunch", price: "$4.99" },
-    { id: 7, image: "/api/placeholder/300/300", name: "Seasonal Fruit Mix", price: "$22.99" },
-    { id: 8, image: "/api/placeholder/300/300", name: "Root Vegetable Collection", price: "$14.99" },
-  ];
+  const { data: productsResponse, isLoading, error } = useAllProducts();
+  const { data: categoriesResponse } = useCategories();
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+
+  const products = productsResponse?.data || [];
+  const categories = categoriesResponse?.data || [];
+
+  const filteredProducts = selectedCategory === "all" 
+    ? products 
+    : products.filter(product => product.category === selectedCategory);
 
   return (
     <div className="min-h-screen bg-background">
@@ -22,16 +28,70 @@ const Products = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              image={product.image}
-              name={product.name}
-              price={product.price}
-            />
+        {/* Category Filter */}
+        <div className="flex flex-wrap justify-center gap-2 mb-8">
+          <Button
+            variant={selectedCategory === "all" ? "default" : "outline"}
+            onClick={() => setSelectedCategory("all")}
+            className="capitalize"
+          >
+            All Products
+          </Button>
+          {categories.map((category) => (
+            <Button
+              key={category}
+              variant={selectedCategory === category ? "default" : "outline"}
+              onClick={() => setSelectedCategory(category)}
+              className="capitalize"
+            >
+              {category}
+            </Button>
           ))}
         </div>
+
+        {error && (
+          <Alert className="mb-8">
+            <AlertDescription>
+              Failed to load products. Please try again later.
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {Array.from({ length: 8 }).map((_, index) => (
+              <div key={index} className="space-y-3">
+                <Skeleton className="aspect-square w-full rounded-lg" />
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-4 w-1/2" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filteredProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                id={product.id}
+                image={product.image}
+                title={product.title}
+                price={product.price}
+                category={product.category}
+                rating={product.rating}
+                description={product.description}
+              />
+            ))}
+          </div>
+        )}
+
+        {!isLoading && filteredProducts.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground text-lg">
+              No products found in this category.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

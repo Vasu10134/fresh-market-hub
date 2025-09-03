@@ -1,8 +1,13 @@
 import { HeroSection } from "@/components/HeroSection";
 import { FeatureCard } from "@/components/FeatureCard";
 import { ProductCard } from "@/components/ProductCard";
+import { useProducts } from "@/hooks/useProducts";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const Index = () => {
+  const { data: productsResponse, isLoading, error } = useProducts(6);
+
   const features = [
     {
       icon: "🛒",
@@ -21,14 +26,7 @@ const Index = () => {
     }
   ];
 
-  const featuredProducts = [
-    { id: 1, image: "/api/placeholder/300/300", name: "Fresh Apple Basket", price: "$12.99" },
-    { id: 2, image: "/api/placeholder/300/300", name: "Organic Vegetables Bundle", price: "$18.99" },
-    { id: 3, image: "/api/placeholder/300/300", name: "Mixed Berry Selection", price: "$8.99" },
-    { id: 4, image: "/api/placeholder/300/300", name: "Citrus Fruit Pack", price: "$15.99" },
-    { id: 5, image: "/api/placeholder/300/300", name: "Leafy Greens Variety", price: "$10.99" },
-    { id: 6, image: "/api/placeholder/300/300", name: "Premium Banana Bunch", price: "$4.99" }
-  ];
+  const featuredProducts = productsResponse?.data || [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -65,16 +63,42 @@ const Index = () => {
               Discover our handpicked selection of the freshest produce available
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {featuredProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                image={product.image}
-                name={product.name}
-                price={product.price}
-              />
-            ))}
-          </div>
+          
+          {error && (
+            <Alert className="mb-8">
+              <AlertDescription>
+                Failed to load products. Please try again later.
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {isLoading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {Array.from({ length: 6 }).map((_, index) => (
+                <div key={index} className="space-y-3">
+                  <Skeleton className="aspect-square w-full rounded-lg" />
+                  <Skeleton className="h-4 w-3/4" />
+                  <Skeleton className="h-4 w-1/2" />
+                  <Skeleton className="h-10 w-full" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {featuredProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  image={product.image}
+                  title={product.title}
+                  price={product.price}
+                  category={product.category}
+                  rating={product.rating}
+                  description={product.description}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
